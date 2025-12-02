@@ -1,5 +1,5 @@
 import { BaseEntity } from "common/base.model";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, DeleteDateColumn, Entity } from "typeorm";
 
 
 @Entity()
