@@ -27,4 +27,8 @@ export class UserRepository extends BaseRepository implements IUserRepository{
         const newUser = this.postRepository().create(dto);
         return await this.postRepository().save(newUser);
     }
+
+    async getUserByEmail(email: string): Promise<User | null> {
+        return await this.postRepository().findOne({ where: { email } });
+    }
 }

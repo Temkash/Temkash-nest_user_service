@@ -10,6 +10,12 @@ export class UserService {
         return await this.userRepository.createUser(dto);
     }
 
+    async getUserByEmail(email: string){
+        return await this.userRepository.getUserByEmail(email);
+    }
+
+
+
     async getAllUsers(){
 
     }
