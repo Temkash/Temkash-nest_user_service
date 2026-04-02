@@ -18,6 +18,14 @@ export class UserService {
         return await this.userRepository.getUserByEmail(email);
     }
 
+    async getUserByEmailIncludingDeleted(email: string) {
+        return await this.userRepository.getUserByEmailIncludingDeleted(email);
+    }
+
+    async restoreUser(dto: CreateUserDto) {
+        return await this.userRepository.restoreUser(dto);
+    }
+
     async paginate(query: PaginationQueryDto) {
         const page = query.page ?? 1;
         const limit = query.limit ?? 10;

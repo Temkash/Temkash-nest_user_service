@@ -27,12 +27,16 @@ export class AuthService {
     }
 
     async registration(userDto: RegistrationDto) {
-        const candidate = await this.userService.getUserByEmail(userDto.email);
-        if (candidate) {
+        const candidate = await this.userService.getUserByEmailIncludingDeleted(userDto.email);
+        if (candidate && !candidate.deletedAt) {
             throw new HttpException('Пользователь с таким email уже существует', HttpStatus.BAD_REQUEST);
         }
+
         const hashPassword = await bcrypt.hash(userDto.password, 5);
-        const user = await this.userService.createUser({ ...userDto, password: hashPassword });
+        const userData = { ...userDto, password: hashPassword };
+        const user = candidate
+            ? await this.userService.restoreUser(userData)
+            : await this.userService.createUser(userData);
         const accessToken = await this.accessTokenService.generateToken(user);
         const refreshToken = await this.refreshTokenService.generateSessionToken(user, userDto.sessionId);
         return {

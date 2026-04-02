@@ -25,6 +25,31 @@ export class UserRepository extends BaseRepository implements IUserRepository {
         return await this.userRepository().findOne({ where: { email } });
     }
 
+    async getUserByEmailIncludingDeleted(email: string): Promise<User | null> {
+        return await this.userRepository().findOne({
+            where: { email },
+            withDeleted: true,
+        });
+    }
+
+    async restoreUser(dto: CreateUserDto): Promise<User> {
+        const user = await this.getUserByEmailIncludingDeleted(dto.email);
+
+        if (!user) {
+            throw new Error('Пользователь не найден');
+        }
+
+        await this.userRepository().restore(user.id);
+
+        user.login = dto.login;
+        user.email = dto.email;
+        user.password = dto.password;
+        user.age = dto.age;
+        user.description = dto.description ?? '';
+
+        return await this.userRepository().save(user);
+    }
+
     async softDeleteUserByEmail(email: string): Promise<void> {
         await this.userRepository().softDelete({ email });
     }
