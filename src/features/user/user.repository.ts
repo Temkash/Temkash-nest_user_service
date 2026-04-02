@@ -25,6 +25,10 @@ export class UserRepository extends BaseRepository implements IUserRepository {
         return await this.userRepository().findOne({ where: { email } });
     }
 
+    async softDeleteUserByEmail(email: string): Promise<void> {
+        await this.userRepository().softDelete({ email });
+    }
+
     async paginate(options: { page: number; limit: number }) {
         const { page, limit } = options;
         const skip = (page - 1) * limit;

@@ -1,9 +1,7 @@
-import { Body, Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { Controller, Delete, Get, Query, Req, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../security/jwt-auth.guard';
 import { PaginationQueryDto } from './dto/pagination-query.dto';
-import { User } from './user.model';
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 
@@ -36,5 +34,12 @@ export class UserController {
     @Get('/my')
     findMe(@Req() req) {
         return this.userService.getMyProfile(req.user.email);
+    }
+
+    @ApiOperation({ summary: 'Soft delete current user' })
+    @UseGuards(JwtAuthGuard)
+    @Delete('/my')
+    softDeleteMe(@Req() req) {
+        return this.userService.softDeleteMyProfile(req.user.email);
     }
 }

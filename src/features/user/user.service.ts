@@ -34,6 +34,11 @@ export class UserService {
         return user ? this.toResponseUserDto(user) : null;
     }
 
+    async softDeleteMyProfile(email: string) {
+        await this.userRepository.softDeleteUserByEmail(email);
+        return { message: 'Пользователь успешно удален' };
+    }
+
     async getPaginatedUsers(query: PaginationQueryDto) {
         const response = await this.paginate(query);
         return {
