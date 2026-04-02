@@ -25,7 +25,7 @@ export class UserRepository extends BaseRepository implements IUserRepository {
         return await this.userRepository().findOne({ where: { email } });
     }
 
-    async paginate(options) {
+    async paginate(options: { page: number; limit: number }) {
         const { page, limit } = options;
         const skip = (page - 1) * limit;
 

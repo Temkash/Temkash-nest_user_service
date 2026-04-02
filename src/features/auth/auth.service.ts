@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
-import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcryptjs';
 import { LoginUserDto } from '../user/dto/login-user.dto';
 import { AccessTokenService } from '../security/access-token/access-token.service';
 import { RefreshTokenService } from '../security/refresh-token/refresh-token.service';
 import { RefreshTokensDto } from './dto/refresh-tokens.dto';
+import { RegistrationDto } from '../user/dto/registration.dto';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +26,7 @@ export class AuthService {
         };
     }
 
-    async registration(userDto: CreateUserDto) {
+    async registration(userDto: RegistrationDto) {
         const candidate = await this.userService.getUserByEmail(userDto.email);
         if (candidate) {
             throw new HttpException('Пользователь с таким email уже существует', HttpStatus.BAD_REQUEST);

@@ -12,7 +12,7 @@ export class RefreshTokenService {
     ) {}
 
 
-    async generateSessionToken(user, sessionId){
+    async generateSessionToken(user: User, sessionId: string){
         const payload = { email: user.email, id: user.id };
         const refreshToken = this.jwtService.sign(payload)
         const tokenHash = await bcrypt.hash(refreshToken, 5);
@@ -21,11 +21,11 @@ export class RefreshTokenService {
         return refreshToken
     }
 
-    async findRefreshToken(user, sessionId){
+    async findRefreshToken(user: User, sessionId: string){
         return await this.refreshTokenRepository.findToken(user, sessionId);
     }
 
-    async deleteRefreshToken(user, sessionId){
+    async deleteRefreshToken(user: User, sessionId: string){
         await this.refreshTokenRepository.deleteToken(user, sessionId);
     }
 

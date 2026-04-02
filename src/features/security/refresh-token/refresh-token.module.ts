@@ -7,7 +7,7 @@ import { refreshTokenRepositoryProvider } from './refresh-token-repository.provi
   providers: [RefreshTokenService, refreshTokenRepositoryProvider],
   imports: [
         JwtModule.register({
-          secret: process.env.JWT_SECRET_KEY || 'secretKey',
+          secret: process.env.JWT_REFRESH_SECRET_KEY || 'secretRefreshKey',
           signOptions: { expiresIn: '30d' },
         }),
     ],
