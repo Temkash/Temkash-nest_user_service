@@ -12,7 +12,7 @@ import { SecurityModule } from '../security/security.module';
     SecurityModule
   ],
   exports: [
-    AuthService
+    AuthService,
   ]
 })
 export class AuthModule {}

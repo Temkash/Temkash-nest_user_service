@@ -1,20 +1,18 @@
 import { Module } from '@nestjs/common';
-import { SecurityService } from './security.service';
-import { JwtModule } from '@nestjs/jwt';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { RefreshTokenModule } from './refresh-token/refresh-token.module';
+import { AccessTokenModule } from './access-token/access-token.module';
 
 @Module({
-  providers: [SecurityService, JwtAuthGuard],
+  providers: [JwtAuthGuard],
   imports: [
-    JwtModule.register({
-      secret: process.env.JWT_SECRET_KEY || 'secretKey',
-      signOptions: { expiresIn: '24h' },
-    })
+    RefreshTokenModule,
+    AccessTokenModule
   ],
   exports: [
-    JwtModule,
-    SecurityService,
-    JwtAuthGuard
+    JwtAuthGuard,
+    AccessTokenModule,
+    RefreshTokenModule
   ]
 })
 export class SecurityModule { }

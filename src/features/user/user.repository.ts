@@ -7,28 +7,42 @@ import { CreateUserDto } from "./dto/create-user.dto";
 
 
 @Injectable()
-export class UserRepository extends BaseRepository implements IUserRepository{
+export class UserRepository extends BaseRepository implements IUserRepository {
     constructor(dataSource: DataSource) {
         super(dataSource);
     }
 
-    private postRepository(entityManager?: EntityManager): Repository<User> {
+    private userRepository(entityManager?: EntityManager): Repository<User> {
         return this.getRepository(User, entityManager);
-    }
-    
-    //example
-    async findPostByIdWithCommentsOrFail(postId: number): Promise<User> {
-        return this.postRepository().findOneOrFail({
-            where: { id: postId },
-        })
     }
 
     async createUser(dto: CreateUserDto): Promise<User> {
-        const newUser = this.postRepository().create(dto);
-        return await this.postRepository().save(newUser);
+        const newUser = this.userRepository().create(dto);
+        return await this.userRepository().save(newUser);
     }
 
     async getUserByEmail(email: string): Promise<User | null> {
-        return await this.postRepository().findOne({ where: { email } });
+        return await this.userRepository().findOne({ where: { email } });
+    }
+
+    async paginate(options) {
+        const { page, limit } = options;
+        const skip = (page - 1) * limit;
+
+        const [users, total] = await this.userRepository().findAndCount({
+            skip,
+            take: limit,
+        });
+
+        return {
+            items: users,
+            meta: {
+                totalItems: total,
+                itemCount: users.length,
+                itemsPerPage: limit,
+                totalPages: Math.ceil(total / limit),
+                currentPage: page,
+            },
+        };
     }
 }
