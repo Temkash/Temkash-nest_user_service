@@ -17,6 +17,7 @@ describe('AuthService', () => {
   const userServiceMock = {
     getUserByEmail: jest.fn(),
     getUserByEmailIncludingDeleted: jest.fn(),
+    getUserByLogin: jest.fn(),
     createUser: jest.fn(),
     restoreUser: jest.fn(),
   };

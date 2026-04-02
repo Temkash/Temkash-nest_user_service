@@ -25,6 +25,10 @@ export class UserRepository extends BaseRepository implements IUserRepository {
         return await this.userRepository().findOne({ where: { email } });
     }
 
+    async getUserByLogin(login: string): Promise<User | null> {
+        return await this.userRepository().findOne({ where: { login } });
+    }
+
     async getUserByEmailIncludingDeleted(email: string): Promise<User | null> {
         return await this.userRepository().findOne({
             where: { email },

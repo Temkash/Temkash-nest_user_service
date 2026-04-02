@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { IUserRepository } from './user-repository.interface';
 import { PaginationQueryDto } from './dto/pagination-query.dto';
-import * as bcrypt from 'bcryptjs';
 import { ResponseUserDto } from './dto/user-response.dto';
 import { User } from './user.model';
 
@@ -16,6 +15,10 @@ export class UserService {
 
     async getUserByEmail(email: string) {
         return await this.userRepository.getUserByEmail(email);
+    }
+
+    async getUserByLogin(login: string) {
+        return await this.userRepository.getUserByLogin(login);
     }
 
     async getUserByEmailIncludingDeleted(email: string) {
